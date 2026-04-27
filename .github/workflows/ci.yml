@@ -13,7 +13,7 @@ env:
 
 jobs:
 
-  # ─── JOB 1: SAST con Bandit ───────────────────────────────────────────────
+  # ─── JOB 1: SAST con Bandit ──────────────────────────────────────────────
   bandit_scan:
     name: Run Bandit SAST Scan
     runs-on: ubuntu-latest

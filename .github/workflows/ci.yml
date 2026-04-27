@@ -35,3 +35,35 @@ jobs:
         with:
           name: sast-bandit-results
           path: sast-bandit.json
+
+  # FASE 2: Análisis SAST con Semgrep (En paralelo)  
+  semgrep_scan:
+    name: Run Semgrep Scan
+    runs-on: ubuntu-latest
+    container:
+      image: returntocorp/semgrep:latest
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+ 
+      - name: Ejecutar Semgrep Scan
+        # --severity=ERROR  → Crítico/Alto
+        # --severity=WARNING → Medio
+        # --json: Formato de salida para consumo externo
+        # || true: Evita detención del pipeline al encontrar hallazgos
+        run: >
+          semgrep scan
+          --config auto
+          --config p/python
+          --severity=ERROR
+          --severity=WARNING
+          --json
+          --output=sast-semgrep.json || true
+ 
+      - name: Subir artefacto Semgrep
+        uses: actions/upload-artifact@v4
+        with:
+          name: sast-semgrep-results
+          path: sast-semgrep.json
+
+
